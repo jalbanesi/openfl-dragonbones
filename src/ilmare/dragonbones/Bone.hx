@@ -289,7 +289,7 @@ class Bone extends EventDispatcher
 		_displayBridge = displayBrideg;			
 		_children = new Array<Bone>();			
 		_globalTransformMatrix = new Matrix();
-		_displayList = [null, null, null, null, null, null, null, null, null, null, null];
+		_displayList = new Array<Dynamic>();
 		_displayIndex = -1;
 		_visible = true;			
 		_tweenNode = new BoneTransform();
