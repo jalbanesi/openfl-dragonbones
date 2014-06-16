@@ -13,34 +13,34 @@ Usage:
 
 - Load armatures (if you want a local copy of the Factory use BaseFactory instead of ArmatureManager):
 
-<code>
-	ArmatureManager.instance.parseData(		
+```Haxe
+ArmatureManager.instance.parseData(		
 		"images/skeleton.xml", 
 		"images/texture.xml",
 		"images/texture.png" 
 	);	
-</code>
+```
 
 - Create armature:
 
-<code>
+```Haxe
   var armature: Armature = ArmatureManager.instance.buildArmature(armatureName);
-</code>  
+```
 
 - Play animation:
 
-<code>
+```Haxe
   WorldClock.clock.add(armature);
   armature.animation.gotoAndPlay("run");
   
   // add to the update loop:
   WorldClock.clock.advanceTime(-1);
-</code>  
+```  
 
 - Access individual bones and child armatures:  
 
-<code>
+```Haxe
   var bone: Bone = armature.getBone("aBone");
   
   bone.childArmature.animation.gotoAndPlay("run");
-</code>
+```
