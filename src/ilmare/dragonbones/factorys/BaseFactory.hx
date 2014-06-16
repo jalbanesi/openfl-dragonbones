@@ -430,7 +430,8 @@ class BaseFactory extends EventDispatcher
 				if(childArmature != null)
 				{
 					childArmature.animation.play();
-					bone.display = childArmature;
+					//bone.display = childArmature; // this doesn't work in every platform
+					bone.setDisplayArmature(childArmature);
 				}
 			}
 			else

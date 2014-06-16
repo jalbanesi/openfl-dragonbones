@@ -1,5 +1,4 @@
 package ilmare.dragonbones.factorys;
-import box2D.dynamics.contacts.B2ContactFactory;
 
 /**
  * ...

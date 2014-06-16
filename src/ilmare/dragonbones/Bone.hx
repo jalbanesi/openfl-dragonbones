@@ -197,7 +197,7 @@ class Bone extends EventDispatcher
 	 */
 	public var parent (get, null): Bone;
 	 
-	public function get_parent():Bone
+	function get_parent():Bone
 	{
 		return _parent;
 	}
@@ -207,14 +207,14 @@ class Bone extends EventDispatcher
 	 */
 	public var display (get, set): Dynamic;
 	 
-	public function get_display():Dynamic
+	function get_display():Dynamic
 	{
 		return _displayBridge.display;
 	}
 	/**
 	 * @private
 	 */
-	public function set_display(value:Dynamic):Dynamic
+	function set_display(value:Dynamic):Dynamic
 	{
 		if(_displayBridge.display == value)
 		{
@@ -233,6 +233,13 @@ class Bone extends EventDispatcher
 		return value;
 		
 	}
+	
+	public function setDisplayArmature(armature:Armature):Void
+	{
+		_displayList[_displayIndex] = armature;
+		
+		_displayBridge.display = armature.display;
+	}	
 	
 	/** @private */
 	public function changeDisplay(displayIndex:Int):Void
