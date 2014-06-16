@@ -46,3 +46,23 @@ ArmatureManager.instance.parseData(
   
   bone.childArmature.animation.gotoAndPlay("run");
 ```
+
+- Full example:
+ 
+```Haxe
+  // 1 - Create
+  var armatureName: String = "Sprites/anArmature");
+  var armature: Armature = ArmatureManager.instance.buildArmature(armatureName);
+  
+  WorldClock.add(armature); // This is necessary to play animations
+  parent.addChild(armature.display); // This is necessary to display the armature. parent is a DisplayObjectContainer, like a Sprite
+  
+  // 2 - Animate
+  armature.animation.gotoAndPlay("jump");
+  armature.addEventListener(AnimationEvent.COMPLETE, onAnimationComplete); 
+
+  // 3 - Dispose (very important in cpp tartets to prevent memory leaks
+  WorldClock.remove(armature);
+  parent.removeChild(armature.display);
+  armature.dispose();
+```
