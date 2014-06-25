@@ -8,7 +8,18 @@ This is a beta release, tested with DragonBones 2.1 Flash Plugin
 
 <b>Currently only supports assets exported as xml + png
 
-<b>Tested targets: Flash, Android, Blackberry, Windows
+<b>Tested targets: Flash, Android, Blackberry, iOS and Windows
+
+
+Install via haxelib git:
+```Bash
+haxelib git dragonbones https://github.com/jalbanesi/openfl-dragonbones.git
+```
+
+Then add to your application.xml:
+```Xml
+<haxelib name="dragonbones" />
+```
 
 
 Usage:
