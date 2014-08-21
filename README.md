@@ -4,7 +4,7 @@ openfl-dragonbones
 Haxe/OpenFL port of DragonBones api
 
 <b>
-This is a beta release, tested with DragonBones 2.1 Flash Plugin
+This is a beta release, tested with DragonBones 2.2 Flash Plugin (dragonbones.effecthub.com/downloads/dragonbones_v2.2.zip)
 
 <b>Currently only supports assets exported as xml + png
 
