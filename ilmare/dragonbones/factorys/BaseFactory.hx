@@ -111,9 +111,7 @@ class BaseFactory extends EventDispatcher
 		var xmlString: String = Assets.getText(skeletonXmlPath);
 		var xml: Xml = Xml.parse(xmlString);					
 		var skeletonData: SkeletonData = XMLDataParser.parseSkeletonData(xml.firstElement());
-		
 		var atlas: NMETextureAtlas = new NMETextureAtlas(textureImgPath, textureXmlPath);
-		
 		_textureAtlasDic.set(atlas.name, atlas);
 		_currentTextureAtlas = atlas;
 		_currentTextureAtlasName = atlas.name;
@@ -508,9 +506,16 @@ class BaseFactory extends EventDispatcher
 		var spr: Sprite = new Sprite();
 		
 		var subTextureData: SubTextureData = textureAtlas.getRegion(fullName);
-		//trace(fullName + subTextureData);
-		
-		textureAtlas.drawTiles(spr.graphics, [ -pivotX, -pivotY, subTextureData.tileId ]);
+#if html5		
+		// TODO: chequear si esto se arregla alguna vez...
+		var child: Sprite = new Sprite();		
+		textureAtlas.drawTiles(child.graphics, [ 0, 0, subTextureData.tileId ]);
+		spr.addChild(child);
+		child.x = -pivotX;
+		child.y = -pivotY;
+#else
+		textureAtlas.drawTiles(spr.graphics, [ -pivotX, -pivotY, subTextureData.tileId ], true);
+#end
 		
 		return spr;
 		

@@ -205,16 +205,16 @@ class Bone extends EventDispatcher
 	/**
 	 * The DisplayObject belonging to this Bone instance. Instance type of this object varies from flash.display.DisplayObject to startling.display.DisplayObject and subclasses.
 	 */
-	public var display (get, set): Dynamic;
+	public var display (get, set): DisplayObject;
 	 
-	function get_display():Dynamic
+	function get_display():DisplayObject
 	{
 		return _displayBridge.display;
 	}
 	/**
 	 * @private
 	 */
-	function set_display(value:Dynamic):Dynamic
+	function set_display(value:Dynamic):DisplayObject
 	{
 		if(_displayBridge.display == value)
 		{
@@ -230,7 +230,7 @@ class Bone extends EventDispatcher
 			return armature.display;
 		}
 		_displayBridge.display = value;
-		return value;
+		return cast value;
 		
 	}
 	

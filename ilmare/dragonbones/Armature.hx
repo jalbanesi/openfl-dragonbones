@@ -12,6 +12,7 @@ import ilmare.dragonbones.animation.IAnimatable;
 import ilmare.dragonbones.events.ArmatureEvent;
 import flash.display.DisplayObject;
 import flash.display.Graphics;
+import openfl.display.Sprite;
 
 import flash.events.EventDispatcher;
 import flash.geom.ColorTransform;
@@ -424,6 +425,20 @@ class Armature extends EventDispatcher implements IAnimatable
 		return bone1.global.z >= bone2.global.z?1: -1;
 	}
 
+	public function tooString(): String
+	{
+		var ret: String = "";
+	
+		for (bone in _boneDepthList)
+		{
+			// TODO: el cast hace que el display se muestre bien en cpp, por alguna razon vuelve como null (debe ser por el dynamic)
+			if (bone.node != null)
+				ret += "\n" + bone.name +"\t" + bone.display +"\t"+ cast(bone.display, Sprite).x +"\t" + bone.display.y;
+		}
+		
+		return ret;
+	}
+	
 	/* TODO: implementar el drawTiles
 	public function getTilesData(): Array<Float>
 	{

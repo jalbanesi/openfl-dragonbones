@@ -20,12 +20,12 @@ class DataList
 	
 	public function getData(dataName:String):Dynamic
 	{
-		return _dataDic.get(dataName);
+		return dataName == null ? null : _dataDic.get(dataName);
 	}
 	
 	public function getDataAt(index:Int):Dynamic
 	{
-		return _dataDic.get(dataNames[index]);
+		return dataNames[index] == null ? null : _dataDic.get(dataNames[index]);
 	}
 	
 	public function addData(data:Dynamic, dataName:String):Void
@@ -48,7 +48,7 @@ class DataList
 		{
 			for(dataName in _dataDic)
 			{
-				if(_dataDic.get(dataName) == data)
+				if(getData(dataName) == data)
 				{
 					removeDataByName(dataName);
 					return;
@@ -60,7 +60,7 @@ class DataList
 	public function removeDataByName(dataName:String):Void
 	{
 		// TODO: testear que funciona
-		var data:Dynamic = _dataDic.get(dataName);
+		var data:Dynamic = getData(dataName);
 		if(data)
 		{
 			_dataDic.remove(dataName); // delete _dataDic[dataName];

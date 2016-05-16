@@ -1,4 +1,5 @@
 package ilmare.dragonbones.objects;
+import openfl.errors.Error;
 /**
 * Copyright 2012-2013. DragonBones. All Rights Reserved.
 * @playerversion Flash 10.0
@@ -92,8 +93,12 @@ class BoneTransform
 	/**
 	 * Z order.
 	 */
-	public var z:Int;
-	
+	public var z(default, set):Int;
+	function set_z(val: Int): Int {
+		// Codigo complicado, ver por que val puede venir como null (en neko) o como cualquiera en windows
+		this.z = Math.isNaN(val) ? 0 : val;	
+		return this.z;
+	}
 	/**
 	 * The rotation of that BoneTransform instance.
 	 */

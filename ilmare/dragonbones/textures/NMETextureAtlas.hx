@@ -56,7 +56,7 @@ class NMETextureAtlas extends Tilesheet implements ITextureAtlas
 				subTextureData.pivotY = Std.parseFloat(subTextureXML.att.resolve(ConstValues.A_PIVOT_Y));
 			subTextureData.tileId = id;
 				
-			addTileRect(subTextureData, new Point(subTextureData.pivotX, subTextureData.pivotY));
+			addTileRect(subTextureData, new Point(subTextureData.pivotX, subTextureData.pivotY));			
 			_subTextureDataDic.set(subTextureName, subTextureData);			
 			//_subTextureDataDic[subTextureName] = subTextureData;
 			id++;
@@ -78,7 +78,7 @@ class NMETextureAtlas extends Tilesheet implements ITextureAtlas
 	
 	public function getRegion(name:String): SubTextureData
 	{
-		return _subTextureDataDic.get(name);
+		return name == null ? null : _subTextureDataDic.get(name);
 	}
 	
 }
