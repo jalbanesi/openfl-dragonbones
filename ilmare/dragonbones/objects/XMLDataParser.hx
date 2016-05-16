@@ -1,7 +1,6 @@
 package ilmare.dragonbones.objects;
 
-import haxe.ui.toolkit.core.interfaces.IFocusable;
-import haxe.xml.Fast;
+import flash.geom.ColorTransform;
 import ilmare.dragonbones.animation.Tween;
 import ilmare.dragonbones.objects.AnimationData;
 import ilmare.dragonbones.objects.ArmatureData;
@@ -14,10 +13,6 @@ import ilmare.dragonbones.objects.MovementData;
 import ilmare.dragonbones.objects.SkeletonData;
 import ilmare.dragonbones.utils.ConstValues;
 import ilmare.dragonbones.utils.TransformUtils;
-import openfl.Assets;
-import flash.geom.ColorTransform;
-import flash.Lib;
-import openfl.errors.Error;
 
 /**
  * ...
