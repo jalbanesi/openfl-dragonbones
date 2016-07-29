@@ -1,12 +1,12 @@
 package ilmare.dragonbones.factorys;
 import ilmare.dragonbones.Armature;
-import flash.display.BitmapData;
-import flash.geom.Matrix;
-import flash.geom.Rectangle;
 import ilmare.dragonbones.objects.SkeletonData;
 import ilmare.dragonbones.objects.XMLDataParser;
-import ilmare.dragonbones.textures.NMETextureAtlas;
+import ilmare.dragonbones.textures.BitmapTextureAtlas;
 import openfl.Assets;
+import openfl.display.BitmapData;
+import openfl.geom.Matrix;
+import openfl.geom.Rectangle;
 
 /**
  * ...
@@ -53,7 +53,7 @@ class ArmatureManager extends BaseFactory
 	
 	public function parseTexture(textureXmlPath: String, textureImgPath: String, name: String = null): Void
 	{
-		var atlas: NMETextureAtlas = new NMETextureAtlas(textureImgPath, textureXmlPath);
+		var atlas: BitmapTextureAtlas = new BitmapTextureAtlas(textureImgPath, textureXmlPath);
 		
 		_textureAtlasDic.set(name != null ? name : atlas.name, atlas);
 		_currentTextureAtlas = atlas;

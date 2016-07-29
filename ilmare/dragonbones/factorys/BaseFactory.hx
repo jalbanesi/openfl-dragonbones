@@ -7,33 +7,27 @@ package ilmare.dragonbones.factorys;
 * @version 2.0
 */
 
+import flash.display.DisplayObject;
+import flash.errors.ArgumentError;
 import ilmare.dragonbones.Armature;
 import ilmare.dragonbones.Bone;
 import ilmare.dragonbones.display.NativeDisplayBridge;
 import ilmare.dragonbones.objects.AnimationData;
 import ilmare.dragonbones.objects.ArmatureData;
 import ilmare.dragonbones.objects.BoneData;
-import ilmare.dragonbones.objects.DecompressedData;
 import ilmare.dragonbones.objects.DisplayData;
 import ilmare.dragonbones.objects.SkeletonData;
 import ilmare.dragonbones.objects.XMLDataParser;
-import ilmare.dragonbones.textures.ITextureAtlas;
-import ilmare.dragonbones.textures.NMETextureAtlas;
+import ilmare.dragonbones.textures.BitmapTextureAtlas;
 import ilmare.dragonbones.textures.SubTextureData;
 import openfl.Assets;
-import flash.display.DisplayObject;
-import flash.errors.ArgumentError;
+import openfl.display.Shape;
+import openfl.display.Sprite;
+import openfl.events.Event;
+import openfl.events.EventDispatcher;
+import openfl.geom.Matrix;
 //import ilmare.dragonbones.utils.BytesType;
 
-import flash.display.Bitmap;
-import flash.display.Loader;
-import flash.display.MovieClip;
-import flash.display.Shape;
-import flash.display.Sprite;
-import flash.events.Event;
-import flash.events.EventDispatcher;
-import flash.geom.Matrix;
-import flash.utils.ByteArray;
 
 
 /** Dispatched after a sucessful call to parseData(). */
@@ -61,11 +55,11 @@ class BaseFactory extends EventDispatcher
 	/** @private */
 	private var _skeletonDataDic:Map<String,SkeletonData>;
 	/** @private */
-	private var _textureAtlasDic:Map<String,NMETextureAtlas>;
+	private var _textureAtlasDic:Map<String,BitmapTextureAtlas>;
 	/** @private */
 	private var _currentSkeletonData:SkeletonData;
 	/** @private */
-	private var _currentTextureAtlas:NMETextureAtlas;
+	private var _currentTextureAtlas:BitmapTextureAtlas;
 	/** @private */
 	private var _currentSkeletonName:String;
 	/** @private */
@@ -84,7 +78,7 @@ class BaseFactory extends EventDispatcher
 	{
 		super();
 		_skeletonDataDic = new Map<String,SkeletonData>();
-		_textureAtlasDic = new Map<String,NMETextureAtlas>();
+		_textureAtlasDic = new Map<String,BitmapTextureAtlas>();
 		//_textureAtlasLoadingDic = {};			
 		//_loaderContext.allowCodeImport = true;
 	}
@@ -111,7 +105,7 @@ class BaseFactory extends EventDispatcher
 		var xmlString: String = Assets.getText(skeletonXmlPath);
 		var xml: Xml = Xml.parse(xmlString);					
 		var skeletonData: SkeletonData = XMLDataParser.parseSkeletonData(xml.firstElement());
-		var atlas: NMETextureAtlas = new NMETextureAtlas(textureImgPath, textureXmlPath);
+		var atlas: BitmapTextureAtlas = new BitmapTextureAtlas(textureImgPath, textureXmlPath);
 		_textureAtlasDic.set(atlas.name, atlas);
 		_currentTextureAtlas = atlas;
 		_currentTextureAtlasName = atlas.name;
@@ -194,7 +188,7 @@ class BaseFactory extends EventDispatcher
 	 * @param	The name of the TextureAtlas to return.
 	 * @return A textureAtlas.
 	 */
-	public function getTextureAtlas(name:String):NMETextureAtlas
+	public function getTextureAtlas(name:String):BitmapTextureAtlas
 	{
 		return _textureAtlasDic.get(name);
 	}
@@ -208,7 +202,7 @@ class BaseFactory extends EventDispatcher
 	 * @param	A textureAtlas to add to this BaseFactory instance.
 	 * @param	(optional) A name for this TextureAtlas.
 	 */
-	public function addTextureAtlas(textureAtlas:NMETextureAtlas, name:String = null):Void
+	public function addTextureAtlas(textureAtlas:BitmapTextureAtlas, name:String = null):Void
 	{
 		
 		if(name == null)
@@ -263,7 +257,7 @@ class BaseFactory extends EventDispatcher
 			}
 		}
 		_skeletonDataDic = new Map<String,SkeletonData>();
-		_textureAtlasDic = new Map<String,NMETextureAtlas>();
+		_textureAtlasDic = new Map<String,BitmapTextureAtlas>();
 		//_textureAtlasLoadingDic = {} ;			
 		_currentSkeletonData = null;
 		_currentTextureAtlas = null;
@@ -368,7 +362,7 @@ class BaseFactory extends EventDispatcher
 	 */
 	public function getTextureDisplay(textureName:String, textureAtlasName:String = null, pivotX:Float = 0, pivotY:Float = 0):DisplayObject
 	{
-		var textureAtlas:NMETextureAtlas;
+		var textureAtlas:BitmapTextureAtlas;
 		if(textureAtlasName != null)
 		{
 			textureAtlas = _textureAtlasDic.get(textureAtlasName);
@@ -484,7 +478,7 @@ class BaseFactory extends EventDispatcher
 	/** @private */
 	/*private function generateTextureAtlas(content:Object, textureAtlasXML:XML):Object
 	{
-		var textureAtlas: NMETextureAtlas = new NMETextureAtlas(content, textureAtlasXML);
+		var textureAtlas: BitmapTextureAtlas = new BitmapTextureAtlas(content, textureAtlasXML);
 		return textureAtlas;
 	}*/
 	/** @private */
@@ -501,26 +495,47 @@ class BaseFactory extends EventDispatcher
 		return bone;
 	}
 	
-	private function generateTextureDisplay(textureAtlas:NMETextureAtlas, fullName:String, pivotX:Float, pivotY:Float): DisplayObject
+	private function generateTextureDisplay(textureAtlas:BitmapTextureAtlas, fullName:String, pivotX:Float, pivotY:Float): DisplayObject
 	{
-		var spr: Sprite = new Sprite();
+		//var spr: Sprite = new Sprite();
 		
-		var subTextureData: SubTextureData = textureAtlas.getRegion(fullName);
-#if html5		
+		
+/*#if html5		
 		// TODO: chequear si esto se arregla alguna vez...
 		var child: Sprite = new Sprite();		
 		textureAtlas.drawTiles(child.graphics, [ 0, 0, subTextureData.tileId ]);
 		spr.addChild(child);
 		child.x = -pivotX;
 		child.y = -pivotY;
-#else
-		textureAtlas.drawTiles(spr.graphics, [ -pivotX, -pivotY, subTextureData.tileId ], true);
-#end
+#else	*/	
+		//textureAtlas.drawTiles(spr.graphics, [ -pivotX, -pivotY, subTextureData.tileId ], true);
 		
-		return spr;
+		var subTextureData: SubTextureData = textureAtlas.getRegion(fullName);
+		
+		if (subTextureData != null)
+		{
+			var displayShape: Shape = new Shape();
+			pivotX = Math.isNaN(pivotX) ?  subTextureData.pivotX : pivotX;
+			pivotY = Math.isNaN(pivotY) ?  subTextureData.pivotY : pivotY;			
+			_helpMatirx.a = 1;
+			_helpMatirx.b = 0;
+			_helpMatirx.c = 0;
+			_helpMatirx.d = 1;
+			//_helpMatirx.scale(nativeTextureAtlas.scale, nativeTextureAtlas.scale);
+			_helpMatirx.tx = -subTextureData.x - pivotX;
+			_helpMatirx.ty = -subTextureData.y - pivotY;
+			
+			displayShape.graphics.beginBitmapFill(textureAtlas.bitmapData, _helpMatirx, false, true);			
+			displayShape.graphics.drawRect( -pivotX, -pivotY, subTextureData.width, subTextureData.height);
+			displayShape.graphics.endFill();
+			return displayShape;
+		}		
+//#end
+		
+		return null;
 		
 		/*
-		var nativeTextureAtlas:NMETextureAtlas = NMETextureAtlas;
+		var nativeTextureAtlas:BitmapTextureAtlas = BitmapTextureAtlas;
 		if (nativeTextureAtlas)
 		{
 			var movieClip:MovieClip = nativeTextureAtlas.movieClip;

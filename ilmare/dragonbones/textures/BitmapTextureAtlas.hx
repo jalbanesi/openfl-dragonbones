@@ -4,25 +4,28 @@ import haxe.xml.Fast;
 import ilmare.dragonbones.textures.SubTextureData;
 import ilmare.dragonbones.utils.ConstValues;
 import openfl.Assets;
-import flash.display.BitmapData;
-import openfl.display.Tilesheet;
-import flash.geom.Point;
+import openfl.display.BitmapData;
 
 /**
  * ...
  * @author Juan Ignacio Albanesi
  */
-class NMETextureAtlas extends Tilesheet implements ITextureAtlas
+class BitmapTextureAtlas implements ITextureAtlas
 {
-	private var _name: String;
-	private var _subTextureDataDic: Map<String,SubTextureData>;
+	var _name: String;
+	var _subTextureDataDic: Map<String,SubTextureData>;
 	
-	private var _width: Int;
-	private var _height: Int;
+	var _width: Int;
+	var _height: Int; 
+	
+	var _bitmapData: BitmapData;
+	
+	public var bitmapData(get, never): BitmapData;
+	
 	
 	public function new(bitmapDataPath: String, textureAtlasXMLPath: String) 
 	{
-		super(Assets.getBitmapData(bitmapDataPath));
+		_bitmapData = Assets.getBitmapData(bitmapDataPath);
 		
 		_subTextureDataDic = new Map<String,SubTextureData>();
 		
@@ -56,7 +59,7 @@ class NMETextureAtlas extends Tilesheet implements ITextureAtlas
 				subTextureData.pivotY = Std.parseFloat(subTextureXML.att.resolve(ConstValues.A_PIVOT_Y));
 			subTextureData.tileId = id;
 				
-			addTileRect(subTextureData, new Point(subTextureData.pivotX, subTextureData.pivotY));			
+			//addTileRect(subTextureData, new Point(subTextureData.pivotX, subTextureData.pivotY));			
 			_subTextureDataDic.set(subTextureName, subTextureData);			
 			//_subTextureDataDic[subTextureName] = subTextureData;
 			id++;
@@ -80,5 +83,10 @@ class NMETextureAtlas extends Tilesheet implements ITextureAtlas
 	{
 		return name == null ? null : _subTextureDataDic.get(name);
 	}
+
 	
+	function get_bitmapData(): BitmapData
+	{
+		return _bitmapData;
+	}
 }
